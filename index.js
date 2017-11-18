@@ -1,7 +1,7 @@
-
 const async = require('async')
 const fs = require('fs')
-const cheerio=require('cheerio')
+const cheerio = require('cheerio')
+const request = require('request')
 
 const item = [
     {
@@ -17,9 +17,9 @@ const item = [
 const queue = async.queue((task, callback) => {
     request(task.url, (error, response, body) => {
         $ = cheerio.load(body)
-        const text=$('mw-content-text p').text()
-       
-        fs.witeFire(task.name+ ".txt",text, (err) => {
+        const text = $('#mw-content-text p').text()
+        
+        fs.writeFile(task.name + ".txt", text, (err) => {
             if (err) {
                 console.log(err)
                 callback()
